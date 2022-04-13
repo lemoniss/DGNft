@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor 발신자 #red
+actor 대납자 #blue
+발신자 -> SC: Nonce Request\n(발신자)
+SC -> 발신자: Nonce Response
+발신자 -> SC:  서명전Hash Request\n(수신자, 전송토큰양, Nonce)
+SC -> 발신자: 서명전Hash Response
+발신자 -> 발신자: Hash에 서명함
+발신자 -> 대납자: 서명된Hash 전달
+대납자 -> SC: 대납전송 제출\n(서명된Hash, 수신자, 전송토큰양, Nonce)
+SC -> SC: nonce 검증\n서명된Hash 재사용여부 검증\n서명된Hash 위변조 검증
+SC -> SC: 검증완료\n\n발신자의 토큰을 수신자에게 전달\n수수료는 해당 트랜잭션을 실행한 대납자가 지불
+SC -> 대납자: 트랜잭션 결과 전송
+대납자 -> 발신자: 내가 대신 내줬으니까\n나중에 쏴라
+@enduml
